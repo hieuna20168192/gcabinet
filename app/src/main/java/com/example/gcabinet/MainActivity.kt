@@ -3,14 +3,20 @@ package com.example.gcabinet
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import tp.xmaihh.serialport.bean.ComBean
 
 class MainActivity : AppCompatActivity() {
 
-    private val serialManager = SerialManager()
+    private val serialManager = SerialManager(object : OnDataReceived {
+        override fun onReceive(param: ComBean) {
+            findViewById<TextView>(R.id.tvReceivedMsg).text = param.toString()
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         serialManager.connect()
 
         findViewById<TextView>(R.id.tvLoc0).setOnClickListener {

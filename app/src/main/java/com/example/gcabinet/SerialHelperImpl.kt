@@ -5,7 +5,7 @@ import tp.xmaihh.serialport.SerialHelper
 import tp.xmaihh.serialport.bean.ComBean
 
 internal class SerialHelperImpl(
-    private val received: OnDataReceived = OnDataReceived.NULL
+    private val received: OnDataReceived
 ) : SerialHelper(Contract.PORT, Contract.BAUD_RATE) {
 
     init {

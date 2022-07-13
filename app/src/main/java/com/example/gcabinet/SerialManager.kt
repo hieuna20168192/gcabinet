@@ -2,10 +2,12 @@ package com.example.gcabinet
 
 import tp.xmaihh.serialport.SerialHelper
 
-class SerialManager : ISerial {
+class SerialManager(
+    private val received: OnDataReceived = OnDataReceived.NULL
+) : ISerial {
 
     private val serialHelper: SerialHelper by lazy {
-        SerialHelperImpl()
+        SerialHelperImpl(received)
     }
 
     override fun connect() {
