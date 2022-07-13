@@ -9,7 +9,9 @@ class MainActivity : AppCompatActivity() {
 
     private val serialManager = SerialManager(object : OnDataReceived {
         override fun onReceive(param: ComBean) {
-            findViewById<TextView>(R.id.tvReceivedMsg).text = param.toString()
+            runOnUiThread {
+                findViewById<TextView>(R.id.tvReceivedMsg).text = param.toString()
+            }
         }
     })
 
