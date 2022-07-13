@@ -10,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     private val serialManager = SerialManager(object : OnDataReceived {
         override fun onReceive(param: ComBean) {
             runOnUiThread {
+                // TODO: Convert to hexString later when stable
                 findViewById<TextView>(R.id.tvReceivedMsg).text = param.toString()
             }
         }
