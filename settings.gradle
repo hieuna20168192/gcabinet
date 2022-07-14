@@ -10,8 +10,17 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://jfrog.ghtklab.com/artifactory/ghtkDev'
+            isAllowInsecureProtocol()
+            credentials {
+                it.username("hieuna7")
+                it.password("Ghtk@2022")
+            }
+        }
     }
 }
 rootProject.name = "GCabinet"
 include ':app'
 include ':serialport'
+include ':network'

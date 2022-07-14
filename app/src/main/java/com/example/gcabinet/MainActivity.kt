@@ -2,7 +2,9 @@ package com.example.gcabinet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import com.ghtk.internal.utils.factory.DeviceAppFactory
 import tp.xmaihh.serialport.bean.ComBean
 
 class MainActivity : AppCompatActivity() {

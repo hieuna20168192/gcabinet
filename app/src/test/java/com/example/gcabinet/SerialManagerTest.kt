@@ -16,6 +16,6 @@ class SerialManagerTest {
 
     @Test
     fun send_CM_OPEN_openLock() {
-        serialManager.sendHex(CommandStore.CM_OPEN)
+        serialManager.sendHex("AAEB22020000B955")
     }
 }

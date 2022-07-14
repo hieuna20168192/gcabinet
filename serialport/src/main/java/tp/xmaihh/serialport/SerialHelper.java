@@ -1,5 +1,6 @@
 package tp.xmaihh.serialport;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.File;
@@ -87,39 +88,65 @@ public abstract class SerialHelper {
         private ReadThread() {
         }
 
-        public void run() {
-            super.run();
-            while (!isInterrupted()) {
-                try {
-                    if (SerialHelper.this.mInputStream == null) {
-                        return;
-                    }
-
-                    byte[] buffer = getStickPackageHelper().execute(SerialHelper.this.mInputStream);
-                    String hexStr = ByteUtil.ByteArrToHex(buffer);
-
-                    if (buffer.length > 0) {
-                        ComBean ComRecData = new ComBean(SerialHelper.this.sPort, buffer, buffer.length);
-                        SerialHelper.this.onDataReceived(ComRecData);
-                    }
-//                    int available = SerialHelper.this.mInputStream.available();
-//
-//                    if (available > 0) {
-//                        byte[] buffer = new byte['?'];
-//                        int size = SerialHelper.this.mInputStream.read(buffer);
-//                        if (size > 0) {
-//                            ComBean ComRecData = new ComBean(SerialHelper.this.sPort, buffer, size);
-//                            SerialHelper.this.onDataReceived(ComRecData);
-//                        }
-//                    } else {
-//                        SystemClock.sleep(50);
+//        public void run() {
+//            super.run();
+//            while (!isInterrupted()) {
+//                try {
+//                    if (SerialHelper.this.mInputStream == null) {
+//                        return;
 //                    }
+//
+//                    byte[] buffer = getStickPackageHelper().execute(SerialHelper.this.mInputStream);
+//                    String hexStr = ByteUtil.ByteArrToHex(buffer);
+//
+//                    if (buffer.length > 0) {
+//                        ComBean ComRecData = new ComBean(SerialHelper.this.sPort, buffer, buffer.length);
+//                        SerialHelper.this.onDataReceived(ComRecData);
+//                    }
+////                    int available = SerialHelper.this.mInputStream.available();
+////
+////                    if (available > 0) {
+////                        byte[] buffer = new byte['?'];
+////                        int size = SerialHelper.this.mInputStream.read(buffer);
+////                        if (size > 0) {
+////                            ComBean ComRecData = new ComBean(SerialHelper.this.sPort, buffer, size);
+////                            SerialHelper.this.onDataReceived(ComRecData);
+////                        }
+////                    } else {
+////                        SystemClock.sleep(50);
+////                    }
+//
+//                } catch (Throwable e) {
+//                    Log.e("error", e.getMessage());
+//                    return;
+//                }
+//            }
+//        }
 
-                } catch (Throwable e) {
-                    Log.e("error", e.getMessage());
-                    return;
+        @Override
+        public void run() {
+            byte[] received = new byte[11];
+
+            Log.e("run -> ", "started");
+
+            while (true) {
+
+                if (Thread.currentThread().isInterrupted()) {
+                    break;
                 }
+                try {
+                    int size = mInputStream.read(received);
+                    String str = ByteUtil.ByteArrToHex(received);
+
+                    ComBean comRecData = new ComBean(SerialHelper.this.sPort, received, size);
+                    SerialHelper.this.onDataReceived(comRecData);
+                } catch (IOException e) {
+                    Log.e("run -> ", e.getMessage());
+                }
+                //Thread.yield();
             }
+
+            Log.e("run -> ", "terminated");
         }
     }
 
